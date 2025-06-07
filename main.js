@@ -2,18 +2,13 @@ async function predict() {
   const res = await fetch('data/lotto_data.json');
   const data = await res.json();
 
-  // 전체 번호 빈도 계산
   const freq = Array(46).fill(0); // 1~45
-  data.forEach(draw => {
-    draw.번호.forEach(n => freq[n]++);
-  });
+  data.forEach(draw => draw.번호.forEach(n => freq[n]++));
 
-  // 번호 + 출현수 객체로 변환
   const freqList = freq
     .map((count, num) => ({ num, count }))
-    .slice(1); // 0번 제외
-
-  freqList.sort((a, b) => b.count - a.count);
+    .slice(1)
+    .sort((a, b) => b.count - a.count);
 
   const topPool = freqList.slice(0, 15).map(x => x.num);
   const bottomPool = freqList.slice(-15).map(x => x.num);
@@ -23,7 +18,6 @@ async function predict() {
   for (let i = 0; i < 5; i++) {
     const top3 = getRandomSample(topPool, 3);
     const bottom3 = getRandomSample(bottomPool, 3);
-
     let combined = [...new Set([...top3, ...bottom3])];
 
     while (combined.length < 6) {
@@ -35,11 +29,23 @@ async function predict() {
     allRecommendations.push(combined);
   }
 
-  // 화면 출력
   const resultDiv = document.getElementById('result');
-  resultDiv.innerHTML = allRecommendations
-    .map((set, i) => `<div>세트 ${i + 1}: <span class="text-green-400">${set.join(', ')}</span></div>`)
-    .join('');
+  resultDiv.innerHTML = ''; // 초기화
+
+  allRecommendations.forEach((set, idx) => {
+    const card = document.createElement('div');
+    card.className = 'bg-white/10 backdrop-blur-md p-4 rounded-lg shadow-md text-center animate-fade-in';
+    card.style.animationDelay = `${idx * 100}ms`;
+
+    const ballsHTML = set.map(num => `
+      <span class="inline-flex items-center justify-center w-10 h-10 bg-yellow-300 text-black rounded-full mx-1 text-lg font-bold cursor-pointer hover:scale-110 transition" onclick="copyNumber(${num})">
+        ${num}
+      </span>
+    `).join('');
+
+    card.innerHTML = `<div>${ballsHTML}</div>`;
+    resultDiv.appendChild(card);
+  });
 }
 
 function getRandomSample(arr, count) {
@@ -50,4 +56,11 @@ function getRandomSample(arr, count) {
     result.push(copy.splice(i, 1)[0]);
   }
   return result;
+}
+
+// 📋 번호 복사 기능
+function copyNumber(num) {
+  navigator.clipboard.writeText(num.toString()).then(() => {
+    alert(`번호 ${num} 복사됨!`);
+  });
 }

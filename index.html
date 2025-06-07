@@ -3,14 +3,27 @@
 <head>
   <meta charset="UTF-8">
   <title>로또 번호 예측기</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@3.4.1/dist/tailwind.min.css" rel="stylesheet">
+  <style>
+@keyframes fade-in {
+  from { opacity: 0; transform: scale(0.9); }
+  to { opacity: 1; transform: scale(1); }
+}
+.animate-fade-in {
+  animation: fade-in 0.4s ease-out forwards;
+}
+</style>
 </head>
-<body class="bg-gray-900 text-white flex flex-col items-center justify-center min-h-screen p-4">
-  <h1 class="text-3xl font-bold mb-4">🎯 로또 번호 예측기</h1>
-  <button onclick="predict()" class="bg-yellow-500 hover:bg-yellow-400 text-black font-bold py-2 px-4 rounded shadow">
+<body class="bg-gradient-to-br from-indigo-900 to-gray-900 min-h-screen text-white flex flex-col items-center py-12 px-4">
+  
+  <h1 class="text-4xl font-extrabold mb-6 text-yellow-400 drop-shadow-md">🎯 로또 번호 예측기</h1>
+
+  <button onclick="predict()" class="bg-yellow-400 hover:bg-yellow-300 text-black text-lg font-bold py-3 px-6 rounded-xl shadow-lg transition-all duration-200">
     번호 추천받기
   </button>
-  <div id="result" class="mt-6 text-xl font-mono"></div>
+
+  <div id="result" class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-3xl"></div>
 
   <script src="main.js"></script>
 </body>
