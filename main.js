@@ -8,7 +8,7 @@ async function predict() {
     draw.번호.forEach(n => freq[n]++);
   });
 
-  // 빈도순 정렬
+  // 번호 + 출현수 객체로 변환
   const freqList = freq
     .map((count, num) => ({ num, count }))
     .slice(1); // 0번 제외
@@ -18,19 +18,28 @@ async function predict() {
   const topPool = freqList.slice(0, 15).map(x => x.num);
   const bottomPool = freqList.slice(-15).map(x => x.num);
 
-  const top3 = getRandomSample(topPool, 3);
-  const bottom3 = getRandomSample(bottomPool, 3);
+  const allRecommendations = [];
 
-  let combined = [...new Set([...top3, ...bottom3])];
+  for (let i = 0; i < 5; i++) {
+    const top3 = getRandomSample(topPool, 3);
+    const bottom3 = getRandomSample(bottomPool, 3);
 
-  // 중복 제거로 6개 안 되면 랜덤 채우기
-  while (combined.length < 6) {
-    let n = Math.floor(Math.random() * 45) + 1;
-    if (!combined.includes(n)) combined.push(n);
+    let combined = [...new Set([...top3, ...bottom3])];
+
+    while (combined.length < 6) {
+      const n = Math.floor(Math.random() * 45) + 1;
+      if (!combined.includes(n)) combined.push(n);
+    }
+
+    combined.sort((a, b) => a - b);
+    allRecommendations.push(combined);
   }
 
-  combined.sort((a, b) => a - b);
-  document.getElementById('result').innerText = `추천 번호: ${combined.join(', ')}`;
+  // 화면 출력
+  const resultDiv = document.getElementById('result');
+  resultDiv.innerHTML = allRecommendations
+    .map((set, i) => `<div>세트 ${i + 1}: <span class="text-green-400">${set.join(', ')}</span></div>`)
+    .join('');
 }
 
 function getRandomSample(arr, count) {
