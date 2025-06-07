@@ -31,16 +31,21 @@ async function predict() {
     card.setAttribute('data-set', combined.join(', '));
     container.appendChild(card);
 
-    // 🎯 0.4초씩 딜레이하며 하나씩 추가
     combined.forEach((n, idx) => {
-      setTimeout(() => {
-        const ball = document.createElement('span');
-        ball.className = 'ball animate-fade-in';
-        ball.textContent = n;
-        ball.onclick = () => copySet(ball);
-        card.appendChild(ball);
-      }, idx * 400); // 0.4초씩 증가
-    });
+  setTimeout(() => {
+    const ball = document.createElement('span');
+    ball.className = 'ball animate-pop';
+    ball.textContent = n;
+    ball.onclick = () => copySet(ball);
+    card.appendChild(ball);
+
+    // 🎵 사운드 재생
+    const sound = document.getElementById('pop-sound');
+    sound.currentTime = 0;
+    sound.play();
+  }, idx * 400);
+});
+
   }
 }
 
