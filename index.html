@@ -17,18 +17,21 @@
 </head>
 <body class="bg-gradient-to-br from-indigo-900 to-gray-900 text-white min-h-screen flex items-center justify-center">
 
-  <div class="w-full max-w-2xl px-4 flex flex-col items-center text-center">
-    <h1 class="text-3xl sm:text-4xl font-extrabold mb-6 text-yellow-400 drop-shadow-md">🎯 로또 번호 예측기</h1>
+  <main class="w-full max-w-3xl px-4 flex flex-col items-center text-center">
+    <!-- 제목 -->
+    <h1 class="text-4xl font-extrabold mb-8 text-yellow-400 drop-shadow-lg">🎯 로또 번호 예측기</h1>
 
+    <!-- 추천 버튼 -->
     <button
       onclick="predict()"
-      class="w-4/5 sm:w-3/5 max-w-md bg-yellow-400 hover:bg-yellow-300 text-black text-2xl font-extrabold py-4 px-8 rounded-2xl shadow-xl transition-all duration-200 mb-8 tracking-wide ring-2 ring-yellow-200 hover:scale-105"
+      class="w-4/5 sm:w-3/5 max-w-md bg-yellow-400 hover:bg-yellow-300 text-black text-2xl font-extrabold py-5 px-8 rounded-full shadow-xl transition-all duration-200 mb-10 tracking-wider hover:scale-105"
     >
       🎲 번호 추천받기
     </button>
 
+    <!-- 추천 결과 -->
     <div id="result" class="grid grid-cols-1 sm:grid-cols-2 gap-6 w-full justify-items-center"></div>
-  </div>
+  </main>
 
   <script src="main.js"></script>
 </body>
