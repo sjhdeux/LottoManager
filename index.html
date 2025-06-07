@@ -3,11 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <title>로또 번호 예측기</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@3.4.1/dist/tailwind.min.css" rel="stylesheet">
 </head>
-<body>
-  <h1>로또 번호 예측</h1>
-  <button onclick="predict()">번호 추천받기</button>
-  <div id="result"></div>
+<body class="bg-gray-900 text-white flex flex-col items-center justify-center min-h-screen p-4">
+  <h1 class="text-3xl font-bold mb-4">🎯 로또 번호 예측기</h1>
+  <button onclick="predict()" class="bg-yellow-500 hover:bg-yellow-400 text-black font-bold py-2 px-4 rounded shadow">
+    번호 추천받기
+  </button>
+  <div id="result" class="mt-6 text-xl font-mono text-green-400"></div>
 
   <script src="main.js"></script>
 </body>
