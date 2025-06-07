@@ -39,10 +39,15 @@ async function predict() {
     ball.onclick = () => copySet(ball);
     card.appendChild(ball);
 
-    // 🎵 사운드 재생
+    // 🎵 사운드
     const sound = document.getElementById('pop-sound');
+    if (sound) {
     sound.currentTime = 0;
-    sound.play();
+    sound.play().catch(() => {}); // Safari 에러 무시
+    }
+
+
+    
   }, idx * 400);
 });
 
