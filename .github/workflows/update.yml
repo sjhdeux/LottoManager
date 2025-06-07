@@ -2,8 +2,11 @@ name: 매주 로또 데이터 업데이트
 
 on:
   schedule:
-    - cron: '0 14 * * 6'   # 매주 토요일 오후 9시 KST (UTC 기준: 12시)
-  workflow_dispatch:        # GitHub에서 수동 실행도 가능
+    - cron: '0 14 * * 6'   # 매주 토요일 밤 11시 (KST)
+  workflow_dispatch:
+
+permissions:
+  contents: write  # ✅ Push를 위해 필요한 권한
 
 jobs:
   update:
@@ -28,6 +31,11 @@ jobs:
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
           git add data/lotto_data.json
-          git commit -m "🔄 로또 데이터 자동 업데이트" || echo "변경사항 없음"
-          git push
+          if git diff --cached --quiet; then
+            echo "✅ 변경사항 없음. 커밋/푸시 생략"
+          else
+            git commit -m "🔄 로또 데이터 자동 업데이트"
+            git push
+          fi
