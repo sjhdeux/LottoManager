@@ -53,4 +53,16 @@ async function predict() {
     card.className = "card";
     card.setAttribute("data-set", combined.join(", "));
     card.innerHTML = combined
-      .map(n => `<span class="ball" onclick="copySet(this)">${n}</
+      .map(n => `<span class="ball" onclick="copySet(this)">${n}</span>`)
+      .join("");
+    container.appendChild(card);
+  }
+}
+
+function copySet(el) {
+  const card = el.closest(".card");
+  const text = card.getAttribute("data-set");
+  navigator.clipboard.writeText(text).then(() => {
+    alert(`복사됨: ${text}`);
+  });
+}
