@@ -4,17 +4,18 @@
   <meta charset="UTF-8">
   <title>로또 번호 예측기</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
   <style>
     * {
       box-sizing: border-box;
     }
     body {
+      font-family: 'Press Start 2P', cursive, sans-serif;
       margin: 0;
-      padding: 0;
-      background: linear-gradient(to bottom right, #1e3a8a, #111827);
-      color: white;
-      font-family: sans-serif;
-      height: 100vh;
+      min-height: 100vh;
+      background: #7ec850;
+      background-image: repeating-linear-gradient(45deg, #7ec850 0 10px, #6eb040 10px 20px);
+      color: #2e3d1f;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -23,25 +24,41 @@
     .container {
       max-width: 600px;
       width: 90%;
+      margin: 40px auto;
+      border: 8px solid #3a5c2c;
+      border-radius: 0;
+      background: #a8e063;
+      box-shadow: 0 0 0 12px #3a5c2c, 0 0 0 20px #2e3d1f;
+      padding: 2rem 1rem 3rem 1rem;
+      position: relative;
     }
     h1 {
-      font-size: 3rem;
-      color: gold;
+      color: #fff;
+      text-shadow: 2px 2px 0 #3a5c2c, 4px 4px 0 #2e3d1f;
+      font-size: 2rem;
       margin-bottom: 2rem;
+    }
+    .button-container {
+      margin-bottom: 2.5rem;
+      display: flex;
+      justify-content: center;
     }
     button {
-      font-size: 2rem;
-      padding: 1rem 2rem;
-      background-color: gold;
-      color: black;
-      border: none;
-      border-radius: 1rem;
+      font-family: 'Press Start 2P', cursive, sans-serif;
+      font-size: 1.2rem;
+      background: #b0c4d8;
+      color: #2e3d1f;
+      border: 4px solid #3a5c2c;
+      border-radius: 0.5rem;
+      box-shadow: 4px 4px 0 #2e3d1f;
+      padding: 1.2rem 2.5rem;
       cursor: pointer;
-      margin-bottom: 2rem;
-      transition: transform 0.2s;
+      margin: 0 0.5rem;
+      transition: transform 0.1s;
     }
     button:hover {
-      transform: scale(1.05);
+      background: #d0e4f8;
+      transform: translateY(2px);
     }
     .results {
       display: grid;
@@ -49,16 +66,20 @@
       gap: 1rem;
     }
     .section-title {
-      font-size: 1.8rem;
-      color: gold;
+      font-size: 1.1rem;
+      color: #3a5c2c;
       margin: 2rem 0 1rem;
       text-align: left;
+      letter-spacing: 1px;
     }
     .card {
-      background-color: rgba(255, 255, 255, 0.1);
-      padding: 1rem;
-      border-radius: 1rem;
-      font-size: 1.5rem;
+      background: #b0c4d8;
+      border: 4px solid #3a5c2c;
+      border-radius: 0.5rem;
+      box-shadow: 4px 4px 0 #2e3d1f;
+      margin-bottom: 1.2rem;
+      padding: 1rem 0.5rem;
+      font-size: 1.1rem;
     }
     .ball {
       display: inline-block;
@@ -66,47 +87,50 @@
       height: 2.5rem;
       line-height: 2.5rem;
       margin: 0.3rem;
-      background: gold;
-      color: black;
-      border-radius: 50%;
+      background: #fff;
+      color: #2e3d1f;
+      border: 3px solid #3a5c2c;
+      border-radius: 0.3rem;
       font-weight: bold;
+      font-family: 'Press Start 2P', cursive, sans-serif;
+      font-size: 1.1rem;
+      box-shadow: 2px 2px 0 #2e3d1f;
       cursor: pointer;
     }
     @keyframes fade-in {
-  from {
-    opacity: 0;
-    transform: scale(0.8);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
+      from {
+        opacity: 0;
+        transform: scale(0.8);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
     }
     .animate-fade-in {
-    animation: fade-in 0.3s ease-out;
+      animation: fade-in 0.3s ease-out;
     }
-
     @keyframes ball-pop {
-        0% {
-            transform: scale(0.5) rotate(0deg);
-            opacity: 0;
-        }
-        100% {
-            transform: scale(1) rotate(360deg);
-            opacity: 1;
-        }
+      0% {
+        transform: scale(0.5) rotate(0deg);
+        opacity: 0;
+      }
+      100% {
+        transform: scale(1) rotate(360deg);
+        opacity: 1;
+      }
     }
     .animate-pop {
-    animation: ball-pop 0.4s ease-out;
+      animation: ball-pop 0.4s ease-out;
     }
-
-
   </style>
 </head>
 <body>
   <div class="container">
     <h1>🎯 로또 번호 예측기</h1>
-    <button onclick="predict()">🎲 번호 추천받기</button>
+    <div class="button-container">
+      <button onclick="predict()">🎲 번호 추천받기</button>
+    </div>
     <div id="result" class="results">
       <div id="strong-recommendations"></div>
       <div id="regular-recommendations"></div>
