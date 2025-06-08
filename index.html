@@ -48,6 +48,12 @@
       grid-template-columns: 1fr;
       gap: 1rem;
     }
+    .section-title {
+      font-size: 1.8rem;
+      color: gold;
+      margin: 2rem 0 1rem;
+      text-align: left;
+    }
     .card {
       background-color: rgba(255, 255, 255, 0.1);
       padding: 1rem;
@@ -101,7 +107,10 @@
   <div class="container">
     <h1>🎯 로또 번호 예측기</h1>
     <button onclick="predict()">🎲 번호 추천받기</button>
-    <div id="result" class="results"></div>
+    <div id="result" class="results">
+      <div id="strong-recommendations"></div>
+      <div id="regular-recommendations"></div>
+    </div>
   </div>
 
   <script>
@@ -115,6 +124,16 @@
       return result;
     }
 
+    function createNumberCard(numbers, container) {
+      const card = document.createElement('div');
+      card.className = 'card';
+      card.setAttribute('data-set', numbers.join(', '));
+      card.innerHTML = numbers.map(n =>
+        `<span class="ball" onclick="copySet(this)">${n}</span>`
+      ).join('');
+      container.appendChild(card);
+    }
+
     async function predict() {
       const res = await fetch('data/lotto_data.json');
       const data = await res.json();
@@ -125,12 +144,29 @@
       const freqList = freq.map((count, num) => ({ num, count })).slice(1);
       freqList.sort((a, b) => b.count - a.count);
 
+      // 강력 추천 번호 생성
+      const top5 = freqList.slice(0, 5).map(x => x.num);
+      const bottom5 = freqList.slice(-5).map(x => x.num);
+      const strongPool = [...new Set([...top5, ...bottom5])];
+
+      const strongContainer = document.getElementById('strong-recommendations');
+      strongContainer.innerHTML = '<div class="section-title">💪 강력 추천 번호</div>';
+
+      // 강력 추천 3세트 생성
+      for (let i = 0; i < 3; i++) {
+        const numbers = getRandomSample(strongPool, 6);
+        numbers.sort((a, b) => a - b);
+        createNumberCard(numbers, strongContainer);
+      }
+
+      // 일반 추천 번호 생성
       const topPool = freqList.slice(0, 15).map(x => x.num);
       const bottomPool = freqList.slice(-15).map(x => x.num);
 
-      const container = document.getElementById('result');
-      container.innerHTML = '';
+      const regularContainer = document.getElementById('regular-recommendations');
+      regularContainer.innerHTML = '<div class="section-title">🎲 일반 추천 번호</div>';
 
+      // 일반 추천 5세트 생성
       for (let i = 0; i < 5; i++) {
         const top3 = getRandomSample(topPool, 3);
         const bottom3 = getRandomSample(bottomPool, 3);
@@ -142,13 +178,7 @@
         }
 
         combined.sort((a, b) => a - b);
-        const card = document.createElement('div');
-        card.className = 'card';
-        card.setAttribute('data-set', combined.join(', '));
-        card.innerHTML = combined.map(n =>
-          `<span class="ball" onclick="copySet(this)">${n}</span>`
-        ).join('');
-        container.appendChild(card);
+        createNumberCard(combined, regularContainer);
       }
     }
 
