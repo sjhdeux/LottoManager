@@ -1,0 +1,11 @@
+version: '3.8'
+
+services:
+  lotto-manager:
+    build: .
+    container_name: lotto-manager
+    ports:
+      - "8858:8858"
+    volumes:
+      - ./data:/app/data
+    restart: unless-stopped

@@ -1,7 +1,13 @@
 import requests
 import json
 import os
+import sys
 from datetime import datetime
+
+# Prevent encoding errors on Windows console with emojis
+if sys.platform == 'win32':
+    sys.stdout.reconfigure(encoding='utf-8')
+    sys.stderr.reconfigure(encoding='utf-8')
 
 DATA_PATH = "data/lotto_data.json"
 

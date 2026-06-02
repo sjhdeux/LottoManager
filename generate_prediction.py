@@ -2,6 +2,12 @@ import json
 from collections import Counter
 import os
 import random
+import sys
+
+# Prevent encoding errors on Windows console with emojis
+if sys.platform == 'win32':
+    sys.stdout.reconfigure(encoding='utf-8')
+    sys.stderr.reconfigure(encoding='utf-8')
 
 DATA_FILE = "data/lotto_data.json"
 PREDICTED_FILE = "data/predicted.json"

@@ -42,6 +42,8 @@
       margin-bottom: 2.5rem;
       display: flex;
       justify-content: center;
+      flex-wrap: wrap;
+      gap: 10px;
     }
     button {
       font-family: 'Press Start 2P', cursive, sans-serif;
@@ -130,6 +132,7 @@
     <h1>🎯 나와라!!LOTTO 번호 뚝딱!!</h1>
     <div class="button-container">
       <button onclick="predict()">🎲 번호 뚝딱!</button>
+      <button id="update-btn" onclick="updateData()">🔄 데이터 업데이트</button>
     </div>
     <div id="result" class="results">
       <div id="strong-recommendations"></div>
@@ -212,6 +215,28 @@
       navigator.clipboard.writeText(text).then(() => {
         alert(`복사됨: ${text}`);
       });
+    }
+
+    async function updateData() {
+      const btn = document.getElementById('update-btn');
+      const originalText = btn.innerText;
+      btn.innerText = '⏳ 업데이트 중...';
+      btn.disabled = true;
+      try {
+        const res = await fetch('/api/update', { method: 'POST' });
+        const result = await res.json();
+        if (res.ok && result.status === 'success') {
+          alert('최신 로또 데이터 업데이트 완료!');
+          predict();
+        } else {
+          alert('업데이트 실패: ' + (result.message || '알 수 없는 오류'));
+        }
+      } catch (err) {
+        alert('업데이트 중 오류 발생: ' + err.message);
+      } finally {
+        btn.innerText = originalText;
+        btn.disabled = false;
+      }
     }
   </script>
   <audio id="pop-sound" src="https://www.soundjay.com/button/sounds/button-16.mp3" preload="auto"></audio>
